@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pizzeria Da Andrea</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rosso: #c0392b;
+      --rosso-scuro: #922b21;
+      --arancio: #e67e22;
+      --crema: #fdf6ec;
+      --beige: #f0e0c0;
+      --marrone: #5d3a1a;
+      --testo: #2c1a0e;
+      --bianco: #fff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--crema);
+      color: var(--testo);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* NAVBAR */
+    nav {
+      background: var(--marrone);
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      position: relative;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--beige);
+      font-size: 1.4rem;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--beige);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--arancio); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 3px;
+      background: var(--beige);
+      border-radius: 2px;
+    }
+    #menu-toggle { display: none; }
+    #menu-toggle:checked ~ .nav-links {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      left: -20px; right: -20px;
+      background: var(--marrone);
+      padding: 16px 20px;
+      gap: 16px;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--rosso-scuro);
+      color: var(--bianco);
+      text-align: center;
+      padding: 80px 20px 70px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.03) 0px,
+        rgba(255,255,255,0.03) 1px,
+        transparent 1px,
+        transparent 16px
+      );
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--arancio);
+      color: var(--bianco);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4.5rem);
+      line-height: 1.15;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .hero h1 em { font-style: italic; color: var(--beige); }
+    .hero p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      opacity: 0.9;
+      font-weight: 300;
+      position: relative;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--bianco);
+      color: var(--rosso-scuro);
+      padding: 14px 36px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: background 0.2s, transform 0.2s;
+      position: relative;
+    }
+    .hero-cta:hover { background: var(--beige); transform: translateY(-2px); }
+
+    section { padding: 64px 20px; }
+    .container { max-width: 1100px; margin: auto; }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--rosso-scuro);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      text-align: center;
+      color: #7a5c3a;
+      margin-bottom: 48px;
+      font-size: 1rem;
+    }
+
+    /* CHI SIAMO */
+    #chi-siamo { background: var(--bianco); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .about-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--beige);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+    }
+    .about-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--marrone);
+      margin-bottom: 16px;
+    }
+    .about-text p { color: #5a3e28; margin-bottom: 14px; line-height: 1.8; }
+    .highlight { display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+    .highlight-item {
+      background: var(--crema);
+      border-left: 4px solid var(--rosso);
+      padding: 10px 16px;
+      flex: 1;
+      min-width: 120px;
+    }
+    .highlight-item strong {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--rosso);
+      font-family: 'Playfair Display', serif;
+    }
+    .highlight-item span { font-size: 0.85rem; color: #7a5c3a; }
+
+    /* MENU */
+    #menu { background: var(--crema); }
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 10px 24px;
+      border: 2px solid var(--rosso);
+      background: transparent;
+      color: var(--rosso);
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover { background: var(--rosso); color: var(--bianco); }
+    .menu-panel { display: none; }
+    .menu-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+    .pizza-card {
+      background: var(--bianco);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .pizza-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+    .pizza-emoji { background: var(--beige); font-size: 3.5rem; text-align: center; padding: 24px; }
+    .pizza-info { padding: 16px 20px 20px; }
+    .pizza-info h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--marrone);
+      margin-bottom: 6px;
+    }
+    .pizza-info p { font-size: 0.88rem; color: #7a5c3a; margin-bottom: 12px; line-height: 1.5; }
+    .pizza-footer { display: flex; justify-content: space-between; align-items: center; }
+    .price { font-size: 1.3rem; font-weight: 700; color: var(--rosso); font-family: 'Playfair Display', serif; }
+    .badge-new {
+      background: var(--arancio);
+      color: var(--bianco);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+
+    /* GALLERIA */
+    #galleria { background: var(--marrone); }
+    #galleria .section-title { color: var(--beige); }
+    #galleria .section-sub { color: #c9a87c; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .gallery-item {
+      aspect-ratio: 1;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .gallery-item:hover { transform: scale(1.05); background: rgba(255,255,255,0.15); }
+
+    /* INFO */
+    #info { background: var(--bianco); }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px; }
+    .info-card {
+      text-align: center;
+      padding: 32px 20px;
+      background: var(--crema);
+      border-radius: 4px;
+      border-top: 4px solid var(--rosso);
+    }
+    .info-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .info-card h4 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--marrone); margin-bottom: 10px; }
+    .info-card p { font-size: 0.9rem; color: #7a5c3a; line-height: 1.8; }
+
+    /* CONTATTI */
+    #contatti { background: var(--crema); }
+    .contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    .contact-form { display: flex; flex-direction: column; gap: 14px; }
+    .contact-form input,
+    .contact-form textarea {
+      padding: 12px 16px;
+      border: 2px solid var(--beige);
+      background: var(--bianco);
+      border-radius: 3px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      color: var(--testo);
+      transition: border-color 0.2s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus { outline: none; border-color: var(--rosso); }
+    .contact-form textarea { min-height: 130px; resize: vertical; }
+    .btn-submit {
+      background: var(--rosso);
+      color: var(--bianco);
+      border: none;
+      padding: 14px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover { background: var(--rosso-scuro); }
+    .contact-details h4 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--marrone); margin-bottom: 20px; }
+    .contact-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
+    .ci-icon { font-size: 1.4rem; margin-top: 2px; }
+    .contact-item p { color: #5a3e28; font-size: 0.95rem; line-height: 1.7; }
+    .contact-item strong { display: block; color: var(--marrone); margin-bottom: 2px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--testo);
+      color: var(--beige);
+      text-align: center;
+      padding: 32px 20px;
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--arancio); text-decoration: none; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.5rem; margin-bottom: 8px; color: var(--bianco); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-img { font-size: 4rem; }
+      .contact-wrap { grid-template-columns: 1fr; }
+      .hero { padding: 60px 20px 50px; }
+    }
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">Da Andrea 🍕</a>
+    <label for="menu-toggle" class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </label>
+    <input type="checkbox" id="menu-toggle">
+    <ul class="nav-links">
+      <li><a href="#chi-siamo">Chi siamo</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#galleria">Galleria</a></li>
+      <li><a href="#info">Orari</a></li>
+      <li><a href="#contatti">Contatti</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">Dal 1987 · Castrovillari</div>
+  <h1>La pizza vera,<br><em>come una volta.</em></h1>
+  <p>Impasto a lunga lievitazione, forno a legna, ingredienti freschi di giornata. Senza compromessi.</p>
+  <a href="#menu" class="hero-cta">Guarda il menu</a>
+</header>
+
+<section id="chi-siamo">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img">🍕</div>
+      <div class="about-text">
+        <h3>Una storia di famiglia</h3>
+        <p>Andrea aprì questa pizzeria nel 1987 con una sola certezza: la pizza buona si fa con le mani, con pazienza e con rispetto per gli ingredienti. Oggi, sua figlia Anna e suo nipote Luca portano avanti quella tradizione.</p>
+        <p>Usiamo farina tipo 00, acqua, lievito madre e sale. Nient'altro. L'impasto riposa 48 ore. Il forno a legna raggiunge i 450°C. La pizza è pronta in 90 secondi.</p>
+        <div class="highlight">
+          <div class="highlight-item"><strong>48h</strong><span>Lievitazione</span></div>
+          <div class="highlight-item"><strong>450°</strong><span>Forno a legna</span></div>
+          <div class="highlight-item"><strong>37+</strong><span>Anni di storia</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="container">
+    <h2 class="section-title">Il nostro menu</h2>
+    <p class="section-sub">Tutto fatto al momento, con prodotti selezionati</p>
+    <div class="menu-tabs">
+      <button class="tab-btn active" onclick="showTab('pizze', this)">Pizze</button>
+      <button class="tab-btn" onclick="showTab('fritti', this)">Fritti</button>
+      <button class="tab-btn" onclick="showTab('dolci', this)">Dolci</button>
+      <button class="tab-btn" onclick="showTab('bevande', this)">Bevande</button>
+    </div>
+
+    <div id="pizze" class="menu-panel active">
+      <div class="pizza-card">
+        <div class="pizza-emoji">🍕</div>
+        <div class="pizza-info">
+          <h4>Margherita</h4>
+          <p>Pomodoro San Marzano, fiordilatte, basilico fresco, olio EVO</p>
+          <div class="pizza-footer"><span class="price">€7,50</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🧀</div>
+        <div class="pizza-info">
+          <h4>Quattro Formaggi</h4>
+          <p>Fiordilatte, gorgonzola, provolone, parmigiano reggiano</p>
+          <div class="pizza-footer"><span class="price">€10,00</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🥩</div>
+        <div class="pizza-info">
+          <h4>Diavola</h4>
+          <p>Pomodoro, fiordilatte, salame piccante, peperoncino</p>
+          <div class="pizza-footer"><span class="price">€9,00</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🌿</div>
+        <div class="pizza-info">
+          <h4>Vegana del Bosco</h4>
+          <p>Crema di zucca, funghi porcini, pomodorini, rucola, noci</p>
+          <div class="pizza-footer"><span class="price">€11,00</span><span class="badge-new">Novità</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🐟</div>
+        <div class="pizza-info">
+          <h4>Marinara</h4>
+          <p>Pomodoro San Marzano, aglio, origano, olio EVO. Zero latticini.</p>
+          <div class="pizza-footer"><span class="price">€6,50</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🥓</div>
+        <div class="pizza-info">
+          <h4>Rustica</h4>
+          <p>Fiordilatte, pancetta, patate al forno, rosmarino, pecorino</p>
+          <div class="pizza-footer"><span class="price">€10,50</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="fritti" class="menu-panel">
+      <div class="pizza-card">
+        <div class="pizza-emoji">🍟</div>
+        <div class="pizza-info">
+          <h4>Frittatine di pasta</h4>
+          <p>Pasta fritta ripiena di ragù, piselli e provola. Classico napoletano.</p>
+          <div class="pizza-footer"><span class="price">€2,50 cad.</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🧅</div>
+        <div class="pizza-info">
+          <h4>Montanare</h4>
+          <p>Pizzette fritte con pomodoro, fiordilatte e basilico</p>
+          <div class="pizza-footer"><span class="price">€3,00 cad.</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🧆</div>
+        <div class="pizza-info">
+          <h4>Crocché</h4>
+          <p>Crocchette di patate con pepe, provola, prezzemolo</p>
+          <div class="pizza-footer"><span class="price">€1,50 cad.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="dolci" class="menu-panel">
+      <div class="pizza-card">
+        <div class="pizza-emoji">🍮</div>
+        <div class="pizza-info">
+          <h4>Pastiera napoletana</h4>
+          <p>Artigianale, con ricotta, grano, uova e acqua di fiori d'arancio</p>
+          <div class="pizza-footer"><span class="price">€4,00</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🍰</div>
+        <div class="pizza-info">
+          <h4>Torta al cioccolato</h4>
+          <p>Con crema al cioccolato fondente, fatta in casa ogni giorno</p>
+          <div class="pizza-footer"><span class="price">€3,50</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🍦</div>
+        <div class="pizza-info">
+          <h4>Gelato artigianale</h4>
+          <p>Due gusti a scelta: nocciola, pistacchio, cioccolato, limone</p>
+          <div class="pizza-footer"><span class="price">€3,00</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="bevande" class="menu-panel">
+      <div class="pizza-card">
+        <div class="pizza-emoji">🍺</div>
+        <div class="pizza-info">
+          <h4>Birra artigianale</h4>
+          <p>Bionda, ambrata o rossa – da un birrificio locale. 33cl o 66cl.</p>
+          <div class="pizza-footer"><span class="price">da €3,50</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🍷</div>
+        <div class="pizza-info">
+          <h4>Vino della casa</h4>
+          <p>Rosso o bianco sfuso, calabrese. Mezzo litro o litro.</p>
+          <div class="pizza-footer"><span class="price">da €4,00</span></div>
+        </div>
+      </div>
+      <div class="pizza-card">
+        <div class="pizza-emoji">🥤</div>
+        <div class="pizza-info">
+          <h4>Bibite & acqua</h4>
+          <p>Coca-Cola, Fanta, acqua naturale o frizzante</p>
+          <div class="pizza-footer"><span class="price">€2,00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="galleria">
+  <div class="container">
+    <h2 class="section-title">Dalla nostra cucina</h2>
+    <p class="section-sub">Ogni pizza è un pezzo unico</p>
+    <div class="gallery-grid">
+      <div class="gallery-item">🍕</div>
+      <div class="gallery-item">🔥</div>
+      <div class="gallery-item">🌿</div>
+      <div class="gallery-item">🧀</div>
+      <div class="gallery-item">🫙</div>
+      <div class="gallery-item">🍅</div>
+      <div class="gallery-item">👨‍🍳</div>
+      <div class="gallery-item">🪵</div>
+      <div class="gallery-item">🫒</div>
+    </div>
+  </div>
+</section>
+
+<section id="info">
+  <div class="container">
+    <h2 class="section-title">Orari & informazioni</h2>
+    <p class="section-sub">Siamo qui ad aspettarti</p>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-icon">🕐</div>
+        <h4>Orari</h4>
+        <p><strong>Lun – Ven</strong><br>12:00 – 14:30 · 19:00 – 23:00<br><br><strong>Sab – Dom</strong><br>12:00 – 15:00 · 18:30 – 23:30</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">📍</div>
+        <h4>Dove siamo</h4>
+        <p>Via Roma 42<br>80100 Castrovillari (NA)<br><br>A 5 minuti dalla stazione centrale</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">🚗</div>
+        <h4>Parcheggio</h4>
+        <p>Parcheggio gratuito in Via dei Tribunali<br><br>Consegna a domicilio entro 3 km</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon">📞</div>
+        <h4>Prenotazioni</h4>
+        <p><a href="tel:+390812345678" style="color:var(--rosso);text-decoration:none;font-weight:700;">081 234 5678</a><br><br>Consigliamo di prenotare nel weekend</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contatti">
+  <div class="container">
+    <h2 class="section-title">Scrivici</h2>
+    <p class="section-sub">Per prenotazioni, eventi privati o info</p>
+    <div class="contact-wrap">
+      <div class="contact-form">
+        <input type="text" placeholder="Il tuo nome">
+        <input type="email" placeholder="La tua email">
+        <input type="text" placeholder="Numero di persone (es. 4, sabato sera)">
+        <textarea placeholder="Il tuo messaggio..."></textarea>
+        <button class="btn-submit" onclick="alert('Messaggio inviato! Ti ricontattiamo presto 🍕')">Invia messaggio</button>
+      </div>
+      <div class="contact-details">
+        <h4>Vieni a trovarci</h4>
+        <div class="contact-item">
+          <div class="ci-icon">📍</div>
+          <p><strong>Indirizzo</strong>Via Roma 42, 80100 Castrovillari</p>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📞</div>
+          <p><strong>Telefono</strong><a href="tel:+390812345678" style="color:var(--rosso);">081 234 5678</a></p>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">✉️</div>
+          <p><strong>Email</strong><a href="mailto:info@pizzeriadaAndrea.it" style="color:var(--rosso);">info@pizzeriadaAndrea.it</a></p>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📱</div>
+          <p><strong>Social</strong>Seguici su Instagram e Facebook<br>@pizzeriadaAndrea</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Da Andrea 🍕</div>
+  <p>Via Roma 42, Castrovillari · Tel <a href="tel:+390812345678">081 234 5678</a></p>
+  <p style="margin-top:8px;opacity:0.6;">© 2025 Pizzeria Da Andrea · P.IVA 01234567890</p>
+</footer>
+
+<script>
+  function showTab(id, btn) {
+    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>
